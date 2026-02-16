@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hava Durumu Uygulaması | Çağla Sona</title>
+    <!-- Tailwind CSS ve Font Awesome kütüphaneleri -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <!-- Uygulama Kartı -->
+    <div class="glass-effect p-8 rounded-3xl shadow-2xl w-full max-w-md transition-all duration-500">
+        <h1 class="text-3xl font-extrabold text-center text-indigo-800 mb-8 tracking-tight">Hava Durumu</h1>
+        
+        <!-- Arama Alanı -->
+        <div class="flex gap-2 mb-8">
+            <input id="cityInput" type="text" placeholder="Bir şehir yazın..." 
+                class="flex-1 px-5 py-3 rounded-2xl border-2 border-indigo-100 focus:border-indigo-500 focus:outline-none transition-all">
+            <button onclick="getWeather()" class="bg-indigo-600 text-white px-6 py-3 rounded-2xl hover:bg-indigo-700 hover:shadow-lg transition-all active:scale-95">
+                <i class="fas fa-search"></i>
+            </button>
+        </div>
+
+        <!-- Hava Durumu Bilgi Ekranı -->
+        <div id="weatherInfo" class="hidden">
+            <div class="text-center animate-bounce-slow">
+                <h2 id="cityName" class="text-4xl font-bold text-slate-800 uppercase tracking-wide">İstanbul</h2>
+                <div id="iconSection" class="text-7xl my-6 text-indigo-500">
+                    <i class="fas fa-cloud-sun"></i>
+                </div>
+                <div id="tempDisplay" class="text-6xl font-black text-indigo-900 mb-2">24°C</div>
+                <p id="weatherDesc" class="text-slate-500 font-medium text-lg capitalize mb-6">Parçalı Bulutlu</p>
+            </div>
+
+            <!-- Detaylı Bilgiler -->
+            <div class="grid grid-cols-2 gap-4 border-t pt-8">
+                <div class="bg-indigo-50 p-4 rounded-2xl flex items-center gap-4">
+                    <div class="text-indigo-500 text-2xl"><i class="fas fa-tint"></i></div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Nem</p>
+                        <p id="humidityVal" class="text-lg font-extrabold text-slate-800">%65</p>
+                    </div>
+                </div>
+                <div class="bg-indigo-50 p-4 rounded-2xl flex items-center gap-4">
+                    <div class="text-indigo-500 text-2xl"><i class="fas fa-wind"></i></div>
+                    <div>
+                        <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Rüzgar</p>
+                        <p id="windVal" class="text-lg font-extrabold text-slate-800">14 km/h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bekleme ve Başlangıç Mesajı -->
+        <div id="introMsg" class="text-center py-10">
+            <div class="text-indigo-200 text-6xl mb-4"><i class="fas fa-map-marked-alt"></i></div>
+            <p class="text-slate-400 italic">Mühendislik portfolyomun 2. projesini test etmek için bir şehir arayın.</p>
+        </div>
+    </div>
+
+    <!-- JavaScript Mantığı -->
+    <script>
+        async function getWeather() {
+            const city = document.getElementById('cityInput').value;
+            const infoDiv = document.getElementById('weatherInfo');
+            const intro = document.getElementById('introMsg');
+
+            if (!city) return;
+
+            intro.innerHTML = '<i class="fas fa-spinner fa-spin text-3xl"></i><p class="mt-2">Bilgiler getiriliyor...</p>';
+            infoDiv.classList.add('hidden');
+
+            try {
+                // NOT: Gerçek bir API kullanmak istersen OpenWeatherMap sitesinden ücretsiz key alıp burayı güncelleyebiliriz.
+                // Şimdilik simülasyon (mock-up) verileri kullanıyoruz.
+                setTimeout(() => {
+                    const randomTemp = Math.floor(Math.random() * 35);
+                    const randomHumidity = 30 + Math.floor(Math.random() * 60);
+                    const randomWind = Math.floor(Math.random() * 25);
+
+                    document.getElementById('cityName').innerText = city;
+                    document.getElementById('tempDisplay').innerText = randomTemp + "°C";
+                    document.getElementById('humidityVal').innerText = "%" + randomHumidity;
+                    document.getElementById('windVal').innerText = randomWind + " km/h";
+
+                    intro.classList.add('hidden');
+                    infoDiv.classList.remove('hidden');
+                }, 1000);
+            } catch (error) {
+                intro.innerText = "Hava durumu bilgisi alınamadı!";
+            }
+        }
+    </script>
+</body>
+</html>
